@@ -1,14 +1,24 @@
-QT += charts
+QT += core gui sql charts network
 
 HEADERS += \
-    chart.h \
-    chartview.h
+	Client.h \
+	HandleMessage.h \
+	consts.h \
+	dbconnector.h \
+	main.h \
+	mainwindow.h
 
 SOURCES += \
-    main.cpp \
-    chart.cpp \
-    chartview.cpp
+	Client.cpp \
+	HandleMessage.cpp \
+	dbconnector.cpp \
+	main.cpp \
+	mainwindow.cpp
 
-target.path = $$[QT_INSTALL_EXAMPLES]/charts/zoomlinechart
+
+FORMS += \
+	dbconnector.ui \
+	mainwindow.ui
+
 INSTALLS += target
 CONFIG += force_debug_info

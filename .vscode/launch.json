@@ -31,9 +31,8 @@
             "executable": "${workspaceFolder}/stm32f091/main.elf",
             "request": "launch",
             "type": "cortex-debug",
-            "runToEntryPoint": "main",
             "servertype": "stlink",
-            "preLaunchTask": "stm32/build",
+            "preLaunchTask": "stm32/flash",
             "linux": {
                 "stlinkPath": "/usr/bin/st-util"
             },

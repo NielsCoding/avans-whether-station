@@ -1,10 +1,25 @@
-copyright
+# blob
 **/*.o
+**/.cache
+**/compile_commands.json
+
+# stm32-specific files
 stm32f091/main.elf
 stm32f091/main.bin
-stm32f091/.cache
-**/compile_commands.json
-client/makefile
+
+# client-specific files
+client/client.mk
 client/client
+client/moc_*
+client/ui_*
+**/.user
+
+# others
+shared/wifi.h
+shared/main
 .qmake.stash
 .vscode/.cortex-debug.registers.state.json
+copyright
+temp/
+**/.DS_Store
+

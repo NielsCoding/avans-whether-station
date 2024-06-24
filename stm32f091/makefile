@@ -4,6 +4,9 @@ OC = arm-none-eabi-objcopy
 RM = rm -f
 
 TARGET = main
+HOST=$(strip $(shell uname -o))
+
+OBJS += $(patsubst %.c,%-stm.o, $(wildcard ../shared/*.c))
 
 SHARED_FLAGS += -g
 SHARED_FLAGS += -DSTM32F091xC
@@ -11,7 +14,6 @@ SHARED_FLAGS += -Wall
 SHARED_FLAGS += -Wextra
 # SHARED_FLAGS += -Wno-register
 SHARED_FLAGS += -Wa,--defsym,CALL_ARM_SYSTEM_INIT=1
-# SHARED_FLAGS += -I/usr/arm-none-eabi/include/
 SHARED_FLAGS += -I./lib/STM32-base-STM32Cube/HAL/STM32F0xx/inc
 SHARED_FLAGS += -I./lib/STM32-base-STM32Cube/HAL/STM32F0xx/inc/Legacy
 SHARED_FLAGS += -I./lib/STM32-base-STM32Cube/CMSIS/ARM/inc
@@ -20,7 +22,10 @@ SHARED_FLAGS += -I./lib/STM32-base/startup
 SHARED_FLAGS += -I./lib/FreeRTOS-Kernel/include
 SHARED_FLAGS += -I./lib/FreeRTOS-Kernel/portable/GCC/ARM_CM0/
 SHARED_FLAGS += -I.
-SHARED_FLAGS += -O1
+ifeq ($(HOST),GNU/Linux)
+SHARED_FLAGS += -I/usr/arm-none-eabi/include/
+endif
+# SHARED_FLAGS += -O1
 SHARED_FLAGS += -ffunction-sections
 SHARED_FLAGS += -fdata-sections
 SHARED_FLAGS += -Wl,--gc-sections
@@ -74,14 +79,20 @@ $(TARGET).bin: $(TARGET).elf
 %.o: %.s
 	$(CC) -c $(AFLAGS) $< -o $@
 
+lib/%.o: lib/%.c
+	$(CC) -c $(CFLAGS) -w $< -o $@
+
 %.o: %.c
+	$(CC) -c $(CFLAGS) $< -o $@
+
+%-stm.o: %.c
 	$(CC) -c $(CFLAGS) $< -o $@
 
 $(TARGET).elf: $(OBJS)
 	$(LD) $(LFLAGS) $^ -o $@
 
 flash: $(TARGET).bin
-	st-flash write $(TARGET).bin 0x08000000
+	st-flash --reset write $(TARGET).bin 0x08000000
 
 compile_commands: clean
 	compiledb make -n

@@ -10,4 +10,4 @@ fixpath () {
 
 fixpath arm-none-eabi-gcc
 fixpath arm-none-eabi-objcopy
-sed "s#\"/c/#\"C:/#g" -i "$COMPILEDB_FILE"
+sed 's#"/\(.\)/#"\U\1:/#g' -i "$COMPILEDB_FILE"

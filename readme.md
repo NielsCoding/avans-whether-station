@@ -6,8 +6,10 @@
   `client/client.pro` should be tracked under version control, not
   `client/makefile`
 - the stm32 makefile uses git submodules to pull necessary files for
-  compilation. make sure to initialize and sync the git submodules, or re-clone
-  using the `--recursive` flag.
+  compilation. make sure to initialize and sync the git submodules, or use the
+  `--recursive` flag when cloning
+- the stm32 firmware expects the esp8266 module to have the official espressif
+  firmware, not the ai-thinker firmware that the module comes pre-flashed with
 
 ## support
 

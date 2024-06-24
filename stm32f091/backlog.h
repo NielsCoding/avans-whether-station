@@ -30,7 +30,7 @@ typedef struct {
 #pragma pack(pop)
 
 /** @brief global record backlog database pointer */
-extern ws_s_backlog_database* WS_G_BACKLOG_DATABASE;
+extern ws_s_backlog_database* g_ws_backlog_database;
 
 /**
  * @brief add record to database
@@ -55,3 +55,5 @@ ws_s_backlog_record* ws_backlog_get_record(uint16_t record_index);
 /** @brief get pointer to last record with offset `record_offset` from the database */
 ws_s_backlog_record* ws_backlog_get_last_record(uint16_t record_offset);
 
+/** @brief return amount of valid records in database */
+uint16_t ws_backlog_get_record_count();

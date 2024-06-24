@@ -1,72 +1,78 @@
-/****************************************************************************
-**
-** Copyright (C) 2016 The Qt Company Ltd.
-** Contact: https://www.qt.io/licensing/
-**
-** This file is part of the Qt Charts module of the Qt Toolkit.
-**
-** $QT_BEGIN_LICENSE:GPL$
-** Commercial License Usage
-** Licensees holding valid commercial Qt licenses may use this file in
-** accordance with the commercial license agreement provided with the
-** Software or, alternatively, in accordance with the terms contained in
-** a written agreement between you and The Qt Company. For licensing terms
-** and conditions see https://www.qt.io/terms-conditions. For further
-** information use the contact form at https://www.qt.io/contact-us.
-**
-** GNU General Public License Usage
-** Alternatively, this file may be used under the terms of the GNU
-** General Public License version 3 or (at your option) any later version
-** approved by the KDE Free Qt Foundation. The licenses are as published by
-** the Free Software Foundation and appearing in the file LICENSE.GPL3
-** included in the packaging of this file. Please review the following
-** information to ensure the GNU General Public License requirements will
-** be met: https://www.gnu.org/licenses/gpl-3.0.html.
-**
-** $QT_END_LICENSE$
-**
-****************************************************************************/
-
-#include "chart.h"
-#include "chartview.h"
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QMainWindow>
 #include <QtCore/QtMath>
 #include <QtCore/QRandomGenerator>
 #include <QtCharts/QLineSeries>
 #include <QtCharts/QValueAxis>
+#include <QApplication>
+#include <QMessageBox>
+#include <iostream>
+#include <stdio.h>
 
-QT_CHARTS_USE_NAMESPACE
+//#include "chart.h"
+//#include "chartview.h"
+#include "mainwindow.h"
+#include "main.h"
+#include "ui_mainwindow.h"
+
+QSqlDatabase dbRef = QSqlDatabase();
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+	QApplication a(argc, argv);
+    MainWindow w;
 
-//![1]
-    QLineSeries *series = new QLineSeries();
-    for (int i = 0; i < 500; i++) {
-        QPointF p((qreal) i, qSin(M_PI / 50 * i) * 100);
-        p.ry() += QRandomGenerator::global()->bounded(20);
-        *series << p;
-    }
-//![1]
+    dbRef = QSqlDatabase::addDatabase("QMYSQL");
 
-    Chart *chart = new Chart();
-    chart->addSeries(series);
-    chart->setTitle("Zoom in/out example");
-    chart->setAnimationOptions(QChart::SeriesAnimations);
-    chart->legend()->hide();
-    chart->createDefaultAxes();
+//    QString input =  "000e,1d,2f,28\n000d,1d,2f,28\n000c,1d,2f,29\n000b,1d,2f,28\n000a,1d,2f,2a";
+//    CSV_Import import;
 
-    ChartView *chartView = new ChartView(chart);
-    chartView->setRenderHint(QPainter::Antialiasing);
 
-    QMainWindow window;
-    window.setCentralWidget(chartView);
-    window.resize(400, 300);
-    window.grabGesture(Qt::PanGesture);
-    window.grabGesture(Qt::PinchGesture);
-    window.show();
+//    QString output = "INSERT INTO `WSdb`.`tblMain` () VALUES ";
+//    QVector<QString> list = input.split("\n");
+//    for (int i = 0; i < list.size(); ++i) {
+//        output.append(import.csvToSql(list[i]));
+//        if (i+1 < list.size()){
+//            output.append(",");
+//        }
+//    }
+//    qDebug() << output;
 
-    return a.exec();
+    w.show();
+	return a.exec();
 }
+
+/* QT_CHARTS_USE_NAMESPACE
+
+int main(int argc, char *argv[])
+{
+	QApplication a(argc, argv);
+
+//![1]
+	QLineSeries *series = new QLineSeries();
+	for (int i = 0; i < 500; i++) {
+		QPointF p((qreal) i, qSin(M_PI / 50 * i) * 100);
+		p.ry() += QRandomGenerator::global()->bounded(20);
+		*series << p;
+	}
+//![1]
+
+	Chart *chart = new Chart();
+	chart->addSeries(series);
+	chart->setTitle("Zoom in/out example");
+	chart->setAnimationOptions(QChart::SeriesAnimations);
+	chart->legend()->hide();
+	chart->createDefaultAxes();
+
+	ChartView *chartView = new ChartView(chart);
+	chartView->setRenderHint(QPainter::Antialiasing);
+
+	QMainWindow window;
+	window.setCentralWidget(chartView);
+	window.resize(400, 300);
+	window.grabGesture(Qt::PanGesture);
+	window.grabGesture(Qt::PinchGesture);
+	window.show();
+
+	return a.exec();
+} */
